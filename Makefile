@@ -1,4 +1,4 @@
-.DEFAULT_GOAL: dryrun
+.DEFAULT_GOAL: build
 
 REPO := "https://github.com/maxgio92/nixfiles.git"
 BRANCH := "main"
@@ -46,15 +46,6 @@ endif
 
 # Development version
 
-.PHONY: build
-build:
-ifneq ($(shell id -u), 0)
-	@echo "You must be root to perform this action."
-	@exit 1
-else
-	@$(nixos-rebuild) build -I nixos-config=.
-endif
-
 .PHONY: test
 test:
 ifneq ($(shell id -u), 0)
@@ -63,6 +54,10 @@ ifneq ($(shell id -u), 0)
 else
 	@$(nixos-rebuild) test -I nixos-config=.
 endif
+
+.PHONY: build
+build:
+	@$(nixos-rebuild) build -I nixos-config=.
 
 .PHONY: dry-activate
 dry-activate:
