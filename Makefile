@@ -1,4 +1,4 @@
-.DEFAULT_GOAL: build
+.DEFAULT_GOAL: dryrun
 
 .PHONY: deploy
 deploy: test build
@@ -11,3 +11,7 @@ build: test
 .PHONY: test
 test:
 	@nixos-rebuild test -I nixos-config=.
+
+.PHONY: dryrun
+dryrun:
+	@nixos-rebuild dry-activate -I nixos-config=.
