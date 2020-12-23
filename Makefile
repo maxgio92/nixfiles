@@ -43,8 +43,6 @@ endif
 
 # Development version
 
-# Development version
-
 .PHONY: build
 build:
 ifneq ($(shell id -u), 0)
