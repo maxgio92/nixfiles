@@ -18,6 +18,7 @@ update: tmpdir := $(shell mktemp -d)
 update:
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
+	@exit 1
 else
 	@$(shell command -v git) clone $(REPO) $(tmpdir)
 	@mkdir -p $(DEPLOYDIR)
@@ -29,6 +30,7 @@ endif
 switch-release:
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
+	@exit 1
 else
 	@$(nixos-rebuild) switch -p "release_$(shell date '+%Y%m%d_%H%M%S')"
 endif
@@ -37,6 +39,7 @@ endif
 switch-deploy:
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
+	@exit 1
 else
 	@$(nixos-rebuild) switch
 endif
@@ -47,6 +50,7 @@ endif
 build:
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
+	@exit 1
 else
 	@$(nixos-rebuild) build -I nixos-config=.
 endif
@@ -55,6 +59,7 @@ endif
 test:
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
+	@exit 1
 else
 	@$(nixos-rebuild) test -I nixos-config=.
 endif
