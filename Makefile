@@ -15,3 +15,7 @@ test:
 .PHONY: dryrun
 dryrun:
 	@nixos-rebuild dry-activate -I nixos-config=.
+
+.PHONY: edit
+edit:
+	@nixos-rebuild edit
