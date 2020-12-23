@@ -1,4 +1,4 @@
-.DEFAULT_GOAL: deploy
+.DEFAULT_GOAL: build
 
 .PHONY: deploy
 deploy: test build
@@ -6,8 +6,8 @@ deploy: test build
 
 .PHONY: build
 build: test
-	@nixos-rebuild build
+	@nixos-rebuild build -I nixos-config=.
 
 .PHONY: test
 test:
-	@nixos-rebuild test
+	@nixos-rebuild test -I nixos-config=.
