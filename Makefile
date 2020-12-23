@@ -4,6 +4,8 @@ REPO := "https://github.com/maxgio92/nixfiles.git"
 BRANCH := "main"
 DEPLOYDIR := /etc/nixos
 
+# Published version
+
 .PHONY: deploy
 deploy: tmpdir := $(shell mktemp -d)
 deploy:
@@ -15,7 +17,9 @@ else
 	@cp $(tmpdir)/*.nix $(DEPLOYDIR)/
 	@rm -rf $(tmpdir)
 	@nixos-rebuild switch -p $(shell date '+%Y-%m-%d-%H-%M-%S')
- endif
+endif
+
+# Development version
 
 .PHONY: build
 build:
