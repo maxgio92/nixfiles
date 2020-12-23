@@ -14,8 +14,8 @@ else
 	@mkdir -p $(DEPLOYDIR)
 	@cp $(tmpdir)/*.nix $(DEPLOYDIR)/
 	@rm -rf $(tmpdir)
-	@nixos-rebuild switch
-endif
+	@nixos-rebuild switch -p $(shell date '+%Y-%m-%d-%H-%M-%S')
+ endif
 
 .PHONY: build
 build:
