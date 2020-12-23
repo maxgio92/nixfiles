@@ -8,7 +8,10 @@ nixos-rebuild := $(shell command -v nixos-rebuild)
 # Published version
 
 .PHONY: deploy
-deploy: update switch
+deploy: update switch-deploy
+
+.PHONY: release
+release: update switch-release
 
 .PHONY: update
 update: tmpdir := $(shell mktemp -d)
@@ -22,13 +25,23 @@ else
 	@rm -rf $(tmpdir)
 endif
 
-.PHONY: switch
-switch:
+.PHONY: switch-release
+switch-release:
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
 else
-	@$(nixos-rebuild) switch -p $(shell date '+%Y-%m-%d-%H-%M-%S')
+	@$(nixos-rebuild) switch -p "release_$(shell date '+%Y%m%d_%H%M%S')"
 endif
+
+.PHONY: switch-deploy
+switch-deploy:
+ifneq ($(shell id -u), 0)
+	@echo "You must be root to perform this action."
+else
+	@$(nixos-rebuild) switch
+endif
+
+# Development version
 
 # Development version
 
