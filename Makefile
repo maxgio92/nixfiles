@@ -25,16 +25,16 @@ else
 	@nixos-rebuild build -I nixos-config=.
 endif
 
-.PHONY: try
-try:
+.PHONY: test
+test:
 ifneq ($(shell id -u), 0)
 	@echo "You must be root to perform this action."
 else
 	@nixos-rebuild test -I nixos-config=.
 endif
 
-.PHONY: test
-test:
+.PHONY: dry-activate
+dry-activate:
 	@nixos-rebuild dry-activate -I nixos-config=.
 
 .PHONY: edit
