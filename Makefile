@@ -1,12 +1,12 @@
-.DEFAULT_GOAL: build
-
 REPO := "https://github.com/maxgio92/nixfiles.git"
 BRANCH := "main"
 DEPLOYDIR := /etc/nixos
 nixos-rebuild := $(shell command -v nixos-rebuild)
 
-.PHONY: ensure-root
-ensure-root:
+.DEFAULT_GOAL: build
+
+.PHONY: check-privileges
+check-privileges:
 ifneq ($(shell id -u), 0)
 	$(error "You must be root to perform this action.")
 endif
@@ -21,24 +21,24 @@ stage: update switch-stage
 
 .PHONY: update
 update: tmpdir := $(shell mktemp -d)
-update: ensure-root
+update: check-privileges
 	@$(shell command -v git) clone $(REPO) $(tmpdir)
 	@mkdir -p $(DEPLOYDIR)
 	@cp $(tmpdir)/*.nix $(DEPLOYDIR)/
 	@rm -rf $(tmpdir)
 
-.PHONY: switch-stage
-switch-stage: ensure-root
-	@$(nixos-rebuild) switch -p staging
-
 .PHONY: switch-deploy
-switch-deploy: ensure-root
+switch-deploy: check-privileges
 	@$(nixos-rebuild) switch
+
+.PHONY: switch-stage
+switch-stage: check-privileges
+	@$(nixos-rebuild) switch -p staging
 
 # Development version
 
 .PHONY: test
-test: ensure-root
+test: check-privileges
 	@$(nixos-rebuild) test -I nixos-config=./configuration.nix
 
 .PHONY: build
