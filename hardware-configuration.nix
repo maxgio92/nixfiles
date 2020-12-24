@@ -16,6 +16,7 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/5b8ee06e-72b4-45e2-9729-568e6eeae9e3";
       fsType = "ext4";
+      options = [ "discard" ];
     };
 
   swapDevices =
