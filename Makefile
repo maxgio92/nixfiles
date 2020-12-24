@@ -5,63 +5,49 @@ BRANCH := "main"
 DEPLOYDIR := /etc/nixos
 nixos-rebuild := $(shell command -v nixos-rebuild)
 
+.PHONY: ensure-root
+ensure-root:
+ifneq ($(shell id -u), 0)
+	$(error "You must be root to perform this action.")
+endif
+
 # Published version
 
 .PHONY: deploy
 deploy: update switch-deploy
 
-.PHONY: release
-release: update switch-release
+.PHONY: stage
+stage: update switch-stage
 
 .PHONY: update
 update: tmpdir := $(shell mktemp -d)
-update:
-ifneq ($(shell id -u), 0)
-	@echo "You must be root to perform this action."
-	@exit 1
-else
+update: ensure-root
 	@$(shell command -v git) clone $(REPO) $(tmpdir)
 	@mkdir -p $(DEPLOYDIR)
 	@cp $(tmpdir)/*.nix $(DEPLOYDIR)/
 	@rm -rf $(tmpdir)
-endif
 
-.PHONY: switch-release
-switch-release:
-ifneq ($(shell id -u), 0)
-	@echo "You must be root to perform this action."
-	@exit 1
-else
-	@$(nixos-rebuild) switch -p "release_$(shell date '+%Y%m%d_%H%M%S')"
-endif
+.PHONY: switch-stage
+switch-stage: ensure-root
+	@$(nixos-rebuild) switch -p staging
 
 .PHONY: switch-deploy
-switch-deploy:
-ifneq ($(shell id -u), 0)
-	@echo "You must be root to perform this action."
-	@exit 1
-else
+switch-deploy: ensure-root
 	@$(nixos-rebuild) switch
-endif
 
 # Development version
 
 .PHONY: test
-test:
-ifneq ($(shell id -u), 0)
-	@echo "You must be root to perform this action."
-	@exit 1
-else
-	@$(nixos-rebuild) test -I nixos-config=.
-endif
+test: ensure-root
+	@$(nixos-rebuild) test -I nixos-config=./configuration.nix
 
 .PHONY: build
 build:
-	@$(nixos-rebuild) build -I nixos-config=.
+	@$(nixos-rebuild) build -I nixos-config=./configuration.nix
 
 .PHONY: dry-activate
 dry-activate:
-	@$(nixos-rebuild) dry-activate -I nixos-config=.
+	@$(nixos-rebuild) dry-activate -I nixos-config=./configuration.nix
 
 .PHONY: edit
 edit:
