@@ -24,7 +24,7 @@ update: tmpdir := $(shell mktemp -d)
 update: check-privileges
 	@$(shell command -v git) clone $(REPO) $(tmpdir)
 	@mkdir -p $(DEPLOYDIR)
-	@rsync -a $(tmpdir)/src/ $(DEPLOYDIR)/
+	@rsync -a --delete $(tmpdir)/src/ $(DEPLOYDIR)/
 	@rm -rf $(tmpdir)
 
 .PHONY: switch-deploy
