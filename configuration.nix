@@ -7,16 +7,16 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./boot-loader-configuration.nix
-      ./hardware-configuration.nix
-      ./networking-configuration.nix
-      ./time-configuration.nix
-      ./internationalisation-configuration.nix
-      ./packages-configuration.nix
-      ./users-configuration.nix
-      ./podman-configuration.nix
-      ./programs-configuration.nix
-      ./services-configuration.nix
-      ./release-configuration.nix
+      ./boot-loader
+      ./hardware
+      ./networking
+      ./time
+      ./internationalisation
+      ./packages
+      ./users
+      ./podman
+      ./programs
+      ./services
+      ./release
     ];
 }
