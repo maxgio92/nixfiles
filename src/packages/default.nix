@@ -4,7 +4,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget vim
-  # firefox
+    firefox
     tmux
   ];
 
