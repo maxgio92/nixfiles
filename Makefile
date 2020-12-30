@@ -11,7 +11,7 @@ ifneq ($(shell id -u), 0)
 	$(error "You must be root to perform this action.")
 endif
 
-# Published version
+# Persistent
 
 .PHONY: deploy
 deploy: update switch-deploy
@@ -24,7 +24,7 @@ update: tmpdir := $(shell mktemp -d)
 update: check-privileges
 	@$(shell command -v git) clone $(REPO) $(tmpdir)
 	@mkdir -p $(DEPLOYDIR)
-	@cp $(tmpdir)/*.nix $(DEPLOYDIR)/
+	@rsync -a $(tmpdir)/src/ $(DEPLOYDIR)/
 	@rm -rf $(tmpdir)
 
 .PHONY: switch-deploy
@@ -35,19 +35,19 @@ switch-deploy: check-privileges
 switch-stage: check-privileges
 	@$(nixos-rebuild) switch -p staging
 
-# Development version
+# Ephemeral
 
 .PHONY: test
 test: check-privileges
-	@$(nixos-rebuild) test -I nixos-config=./configuration.nix
+	@$(nixos-rebuild) test -I nixos-config=./src/configuration.nix
 
 .PHONY: build
 build:
-	@$(nixos-rebuild) build -I nixos-config=./configuration.nix
+	@$(nixos-rebuild) build -I nixos-config=./src/configuration.nix
 
 .PHONY: dry-activate
 dry-activate:
-	@$(nixos-rebuild) dry-activate -I nixos-config=./configuration.nix
+	@$(nixos-rebuild) dry-activate -I nixos-config=./src/configuration.nix
 
 .PHONY: edit
 edit:
