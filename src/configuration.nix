@@ -14,7 +14,7 @@
       ./internationalisation
       ./packages
       ./users
-      ./podman
+      ./virtualisation
       ./programs
       ./services
       ./release
