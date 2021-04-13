@@ -10,6 +10,7 @@
     firefox brave
     gnumake
     gnupg
+    go
     kubectl kustomize k9s
     spotify
     tmux
