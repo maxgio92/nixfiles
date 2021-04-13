@@ -8,6 +8,7 @@
   environment.systemPackages = with pkgs; [
     bind
     firefox brave
+    gcc
     gnumake
     gnupg
     go
