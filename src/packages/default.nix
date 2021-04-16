@@ -12,7 +12,7 @@
     gnumake
     gnupg
     go
-    kubectl kustomize k9s
+    kubectl kustomize k9s kind
     spotify
     tmux
     wget vim
