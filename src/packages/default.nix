@@ -13,6 +13,7 @@
     gnupg
     go
     kubectl kustomize k9s kind
+	pciutils
     spotify
     tmux
     wget vim
