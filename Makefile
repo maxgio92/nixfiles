@@ -2,6 +2,7 @@ REPO := "https://github.com/maxgio92/nixfiles.git"
 BRANCH := "main"
 DEPLOYDIR := /etc/nixos
 nixos-rebuild := $(shell command -v nixos-rebuild)
+git := $(shell command -v git)
 
 .DEFAULT_GOAL: build
 
@@ -14,15 +15,20 @@ endif
 # Persistent
 
 .PHONY: deploy
+deploy: version := main
 deploy: update switch-deploy
 
 .PHONY: stage
+stage: version := stage
 stage: update switch-stage
 
 .PHONY: update
 update: tmpdir := $(shell mktemp -d)
 update: check-privileges
-	@$(shell command -v git) clone $(REPO) $(tmpdir)
+	@$(git) clone $(REPO) $(tmpdir) && \
+		$(git) -C $(tmpdir) checkout $(version) && \
+		$(git) -C $(tmpdir) reset --hard origin/$(version) && \
+		$(git) -C $(tmpdir) clean -f
 	@mkdir -p $(DEPLOYDIR)
 	@rsync -a --delete $(tmpdir)/src/ $(DEPLOYDIR)/
 	@rm -rf $(tmpdir)
